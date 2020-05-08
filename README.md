@@ -1,2 +1,2 @@
 # CurrencyXchange
-This project is on Currency Exchange. 
+This simple project is on Currency Exchange. 
