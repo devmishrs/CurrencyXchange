@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -10,9 +11,11 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import UserProfile, Currencies, UserWallet
-from .serializers import (UserSerializer, LoginSerializer,
-                          UserWalletSerializer, UserWalletViewSerializer)
+from .models import (UserProfile, Currencies, UserWallet,
+                     ForeignCurrencyWallet)
+from .serializers import (UserSerializer, LoginSerializer,UserWalletSerializer,
+                          ForeignCurrencyWalletSerializer, UserWalletViewSerializer,
+                          ForeignCurrencyWalletViewSerializer)
 
 # Create your views here.
 
@@ -69,3 +72,37 @@ class UserWalletViewSet(ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
+
+class ForeignCurrencyWalletViewSet(ModelViewSet):
+    queryset = ForeignCurrencyWallet.objects.all()
+    serializer_class = [ForeignCurrencyWalletSerializer,]
+    # permission_class = [IsAuthenticated, ]
+    authentication_classes = []
+
+    def list(self, request):
+        queryset = ForeignCurrencyWallet.objects.all()
+        serializer = ForeignCurrencyWalletViewSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def create(self, request):
+        print("This is request data")
+        data = request.data
+        serializer = ForeignCurrencyWalletSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            data = serializer.data
+            return Response(data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, pk=None):
+        try:
+            print("This is retrieve method")
+            queryset = ForeignCurrencyWallet.objects.get(pk=pk)
+            serializer = ForeignCurrencyWalletViewSerializer(queryset)
+            return Response(serializer.data)
+            #return Response(serializer.data, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print("Something went wrong in foreign wallet....",e)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

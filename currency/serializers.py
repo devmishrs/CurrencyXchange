@@ -3,7 +3,7 @@ from datetime import datetime
 from rest_framework import serializers
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate
-from .models import UserProfile, UserWallet, Currencies
+from .models import UserProfile, UserWallet, Currencies, ForeignCurrencyWallet
 from .utils.views import get_currency_converted_balance
 
 class CurrenciesSerializer(serializers.ModelSerializer):
@@ -76,6 +76,7 @@ class UserWalletSerializer(serializers.ModelSerializer):
         model = UserWallet
         fields = ('__all__')
 
+   
     def update(self, instance, validated_data, *args, **kwargs):
         print("This is instance ... ",instance)
         print("this is validated_data ",validated_data)
@@ -89,3 +90,43 @@ class UserWalletSerializer(serializers.ModelSerializer):
         instance.update_time = datetime.now() 
         instance.save()
         return instance
+
+class ForeignCurrencyWalletViewSerializer(serializers.ModelSerializer):
+    currency = serializers.StringRelatedField()
+    user = serializers.StringRelatedField()
+    update_time = serializers.DateTimeField(format="%d %b-%Y: %H:%M:%S")
+    class Meta:
+        model = ForeignCurrencyWallet
+        fields = ('__all__')
+
+class ForeignCurrencyWalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ForeignCurrencyWallet
+        fields = ('__all__')
+
+    def create(self, validated_data):
+        print("This is validated data ",validated_data)
+        user = validated_data.get('user')
+        currency = validated_data.get('currency')
+        balance = validated_data.get('balance')
+        wallet, is_created = ForeignCurrencyWallet.objects.get_or_create(user=user)
+        if is_created:
+            wallet.currency = currency
+            wallet.balance = balance
+        else:
+            wallet.balance += balance
+        wallet.save()
+        return wallet
+
+    #def create(self, data):
+    #    print("Validated data: ",validated_data)
+    #    amount = validated_data.get('amount')
+    #    user = validated_data.get('user')
+    #    user = User.objects.get(id=user)
+    #    user_wallet, is_created = UserWallet.objects.get_or_create(user=user)
+    #    if is_created:
+    #        user_wallet.wallet_balance = amount
+    #    else:
+    #        user_wallet.wallet_balance += amount
+    #    user_wallet.save()
+    #    return user_wallet

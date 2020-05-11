@@ -4,12 +4,12 @@ from CurrencyXchange import constants
 
 def get_currency_converted_balance(prev, current, balance):
     try:
-        print('Current Currency ',current)
-        print('Previous Currency ',prev)
+        print('Current Currency ',current)  # INR
+        print('Previous Currency ',prev)    # USD
         url = constants.EXCHANGE_API
-        res = requests.get(url, params={'base':prev, 'symbols':current}).json()
-        curr_rate = res['rates'][current]
-        balance = round(balance*curr_rate,3)
+        res = requests.get(url, params={'base':prev, 'symbols':current}).json()   # USD
+        curr_rate = res['rates'][current]  #USD
+        balance = balance*curr_rate
         print("This is balance : ",balance)
         return balance
     except Exception as e:

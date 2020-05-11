@@ -29,6 +29,9 @@ class UserProfile(models.Model):
     class Meta:
         db_table = 'user_profile'
 
+
+
+
 class UserWalletManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(user__is_active=True)
@@ -46,6 +49,27 @@ class UserWallet(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+
+
+class ForeignCurrencyWalletManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(user__is_active=True)
+
+class ForeignCurrencyWallet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    balance = models.FloatField(default=0.0)
+    currency = models.ForeignKey(Currencies, on_delete=models.CASCADE, default=1)
+    update_time = models.DateTimeField(auto_now_add=True)
+
+    objects = ForeignCurrencyWalletManager()
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        db_table = 'foreign_currency_wallet'
 
 def create_user_profile(sender, instance, created, **kwargs):
     print('Called Profile model')
