@@ -10,15 +10,17 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import UserProfile, Currencies
-from .serializers import UserSerializer, LoginSerializer
+from .models import UserProfile, Currencies, UserWallet
+from .serializers import (UserSerializer, LoginSerializer,
+                          UserWalletSerializer, UserWalletViewSerializer)
 
 # Create your views here.
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated,]
+    #permission_classes = [IsAuthenticated,]
+    authentication_classes = []
 
 
 class LoginViewSet(APIView):
@@ -37,10 +39,33 @@ class LoginViewSet(APIView):
            user = serializer.validated_data['user'] 
            login(request, user)
            print('Login success')
-           return Response(status=status.HTTP_201_CREATED)
+           return Response(status=status.HTTP_201_CREATED, data={'user_id':user.id})
         else:
             return Response(status=status.HTTP_403_FORBIDDEN, error=serializer.errors)
        
 
-class UserTransactions(ModelViewSet):
-    pass
+class UserWalletViewSet(ModelViewSet):
+    queryset = UserWallet.objects.all()
+    serializer_class = [UserWalletSerializer,]
+    #permission_classes = [IsAuthenticated,]
+    authentication_classes = []
+
+    def retrieve(self, request, pk=None):
+        try:
+            print('Called retrive..')
+            queryset = UserWallet.objects.get(pk=pk)
+            serializer = UserWalletViewSerializer(queryset)
+            return Response(serializer.data)
+        except Exception as e:
+            print("Error in >>> ",e)
+
+    def update(self, request, pk=None):
+        print(request.data)
+        print("Called update")
+        data = request.data
+        queryset = UserWallet.objects.get(pk=pk)
+        serializer = UserWalletSerializer(queryset, data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)

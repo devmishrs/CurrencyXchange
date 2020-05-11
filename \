@@ -4,15 +4,10 @@ from rest_framework import serializers
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate
 from .models import UserProfile, UserWallet, Currencies
-from .utils.views import get_currency_converted_balance
 
 class CurrenciesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Currencies
-        fields = ('__all__')
-class UserStringSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
+        db_table = Currencies
         fields = ('__all__')
 
 class UserSerializer(serializers.ModelSerializer):
@@ -61,31 +56,28 @@ class LoginSerializer(serializers.ModelSerializer):
             print('Found Exception in user login.. ',e)
             print('Line no : ',sys.exc_info()[-1].tb_lineno)
 
-class UserWalletViewSerializer(serializers.ModelSerializer):
-    currency_type = serializers.StringRelatedField()
-    update_time = serializers.DateTimeField(format="%d %b-%Y: %H:%M:%S")
-    user = serializers.StringRelatedField() 
-
-    class Meta:
-        model = UserWallet
-        fields = ('__all__')
-
 class UserWalletSerializer(serializers.ModelSerializer):
-    #currency_type = CurrenciesSerializer()
     class Meta:
         model = UserWallet
         fields = ('__all__')
+
+    #def create(self, data):
+    #    print("Validated data: ",validated_data)
+    #    amount = validated_data.get('amount')
+    #    user = validated_data.get('user')
+    #    user = User.objects.get(id=user)
+    #    user_wallet, is_created = UserWallet.objects.get_or_create(user=user)
+    #    if is_created:
+    #        user_wallet.wallet_balance = amount
+    #    else:
+    #        user_wallet.wallet_balance += amount
+    #    user_wallet.save()
+    #    return user_wallet
 
     def update(self, instance, validated_data, *args, **kwargs):
         print("This is instance ... ",instance)
         print("this is validated_data ",validated_data)
         instance.wallet_balance += validated_data.get('wallet_balance', instance.wallet_balance) 
-        if 'currency_type' in validated_data:
-            prev_currency = instance.currency_type
-            new_currency = validated_data.get('currency_type', instance.currency_type)
-            instance.currency_type = new_currency
-            current_bal = get_currency_converted_balance(str(prev_currency), str(new_currency), instance.wallet_balance)
-            instance.wallet_balance = current_bal
         instance.update_time = datetime.now() 
         instance.save()
         return instance

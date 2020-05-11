@@ -2,15 +2,19 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.utils.encoding import uri_to_iri
+
 
 # Create your models here.
 
 class Currencies(models.Model):
     currency = models.CharField(max_length=20)
+    currency_code = models.CharField(max_length=8)
+    symbol = models.CharField(max_length=12, null=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.currency
+        return self.currency_code
 
     class Meta:
         db_table = 'currency'
