@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
-from currency.models import UserWallet, ForeignCurrencyWallet
+from currency.models import UserWallet, ForeignCurrencyWallet, TransactionMethod
 
 # Create your models here.
 
@@ -13,6 +13,9 @@ class TransactionMethod(models.Model):
         return self.method
 
 class OrderStatementModel(models.Model):
+    """  UserWallet => ForeignCurrencyWallet
+         UserWallet(self) => UserWallet(other)
+    """
     transaction_id = models.CharField(max_length=155, default=uuid.uuid4().hex.upper())
     timestamp = models.DateTimeField(auto_now_add=True)
     to_self = models.BooleanField(default=False)

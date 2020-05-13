@@ -19,6 +19,13 @@ class Currencies(models.Model):
     class Meta:
         db_table = 'currency'
 
+class TransactionMethod(models.Model):
+    method = models.CharField(max_length=20)
+    class Meta:
+        db_table = 'trancaction_method'
+    def __str__(self):
+        return self.method
+
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     profile_pic = models.ImageField(upload_to='image', null=True, blank=True)
@@ -40,6 +47,7 @@ class UserWalletManager(models.Manager):
 class UserWallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     wallet_balance = models.FloatField(default=0.0)
+    method = models.ForeignKey(TransactionMethod, on_delete=models.CASCADE)
     currency_type = models.ForeignKey(Currencies, on_delete=models.CASCADE, default=1)
     update_time = models.DateTimeField(auto_now_add=True)
 
@@ -62,6 +70,7 @@ class ForeignCurrencyWallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     balance = models.FloatField(default=0.0)
     currency = models.ForeignKey(Currencies, on_delete=models.CASCADE, default=1)
+    method = models.ForeignKey(TransactionMethod, on_delete=models.CASCADE)
     update_time = models.DateTimeField(auto_now_add=True)
 
     objects = ForeignCurrencyWalletManager()
