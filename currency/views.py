@@ -15,7 +15,7 @@ from .models import (UserProfile, Currencies, UserWallet,
                      ForeignCurrencyWallet)
 from .serializers import (UserSerializer, LoginSerializer,UserWalletSerializer,
                           ForeignCurrencyWalletSerializer, UserWalletViewSerializer,
-                          ForeignCurrencyWalletViewSerializer)
+                          ForeignCurrencyWalletViewSerializer, UserProfileSerializer)
 
 # Create your views here.
 
@@ -45,11 +45,30 @@ class LoginViewSet(APIView):
            return Response(status=status.HTTP_201_CREATED, data={'user_id':user.id})
         else:
             return Response(status=status.HTTP_403_FORBIDDEN, error=serializer.errors)
-       
+
+class UserProfileViewSet(ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    authentication_classes = []
+
+    def retrieve(self, request, pk=None):
+        queryset = UserProfile.objects.get(pk=pk)
+        serializer = UserProfileSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, pk=None):
+        print('This is update user profile view.')
+        data = request.data
+        queryset = UserProfile.objects.get(pk=pk)
+        serializer = UserProfileSerializer(queryset, data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 class UserWalletViewSet(ModelViewSet):
     queryset = UserWallet.objects.all()
-    serializer_class = [UserWalletSerializer,]
+    serializer_class = UserWalletSerializer
     #permission_classes = [IsAuthenticated,]
     authentication_classes = []
 
@@ -75,7 +94,7 @@ class UserWalletViewSet(ModelViewSet):
 
 class ForeignCurrencyWalletViewSet(ModelViewSet):
     queryset = ForeignCurrencyWallet.objects.all()
-    serializer_class = [ForeignCurrencyWalletSerializer,]
+    serializer_class = ForeignCurrencyWalletSerializer
     # permission_class = [IsAuthenticated, ]
     authentication_classes = []
 

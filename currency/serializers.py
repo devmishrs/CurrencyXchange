@@ -32,6 +32,22 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ('__all__')
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
+
+    def update(self, instance, validated_data, *args, **kwargs):
+        print("This is validated_data :",validated_data)
+        instance.address = validated_data.get('address', instance.address)
+        instance.profile_pic = validated_data.get('profile_pic', instance.profile_pic)
+        instance.save()
+        return instance
+        
+
 class LoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=22)
     password = serializers.CharField(max_length=55, style={'input_type':'password'})
