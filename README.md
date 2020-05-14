@@ -33,11 +33,12 @@
 
 # Database Schema :-
   ![Database Schema](./database_schema.png)
+  
   Databse schema is also available in root directory of project **database_schema.png**.
 
 # NOTE :
   In every API example data fields are mentioned as **id** instade of **name**.
-  Like,
+  Like, method(1,2), currency(1,2)
 
    - method ((CREDIT,1), (DEBIT, 2))
    - currency ((INR,1), (USD, 2))
