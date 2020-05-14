@@ -5,13 +5,6 @@ from currency.models import UserWallet, ForeignCurrencyWallet, TransactionMethod
 
 # Create your models here.
 
-class TransactionMethod(models.Model):
-    method = models.CharField(max_length=22)
-    class Meta:
-        db_table = 'trancaction_method'
-    def __str__(self):
-        return self.method
-
 class OrderStatementModel(models.Model):
     """  UserWallet => ForeignCurrencyWallet
          UserWallet(self) => UserWallet(other)
