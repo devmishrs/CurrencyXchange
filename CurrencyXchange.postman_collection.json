@@ -1,0 +1,548 @@
+{
+	"info": {
+		"_postman_id": "da3b26dd-6435-4883-bdb1-3ee5bed6676b",
+		"name": "CurrencyXchange",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Update wallet balance",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "qwer1234",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "mp",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "method",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "wallet_balance",
+							"value": "2202",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/wallet/2/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"wallet",
+						"2",
+						""
+					]
+				},
+				"description": "#This is Update wallet data. This is used to UPDATE base currency(INR)\n-> This is like saving account. \n-> This API is used to CREDIT & DEBIT amount in wallet.\n-> Need's 2 parameters 1) method   2) wallet_balance\n"
+			},
+			"response": []
+		},
+		{
+			"name": "View user wallet data",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8001/wallet/2/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"wallet",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "manu",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "qwer1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"login",
+						""
+					]
+				},
+				"description": "This API is for user login"
+			},
+			"response": []
+		},
+		{
+			"name": "Get latest currencies value",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.exchangeratesapi.io/latest?base=INR",
+					"protocol": "https",
+					"host": [
+						"api",
+						"exchangeratesapi",
+						"io"
+					],
+					"path": [
+						"latest"
+					],
+					"query": [
+						{
+							"key": "base",
+							"value": "INR"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get currency value INR vs USD",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.exchangeratesapi.io/latest?symbols=USD&base=INR",
+					"protocol": "https",
+					"host": [
+						"api",
+						"exchangeratesapi",
+						"io"
+					],
+					"path": [
+						"latest"
+					],
+					"query": [
+						{
+							"key": "symbols",
+							"value": "USD"
+						},
+						{
+							"key": "base",
+							"value": "INR"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create foreign currency wallet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user",
+							"value": "9",
+							"type": "text"
+						},
+						{
+							"key": "currency",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "balance",
+							"value": "200",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/foreign_currency_wallet/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"foreign_currency_wallet",
+						""
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "9",
+							"disabled": true
+						},
+						{
+							"key": "amount",
+							"value": "200",
+							"disabled": true
+						},
+						{
+							"key": "currency",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This api is used for create foreign currency wallet of user. This wallet won't be created automatically on user creation.\nTo create wallet this API should be called."
+			},
+			"response": []
+		},
+		{
+			"name": "Get detail of Foreign currency wallet",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8001/foreign_currency_wallet/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"foreign_currency_wallet",
+						"1",
+						""
+					]
+				},
+				"description": "This API is used to get details of foreign currency wallet."
+			},
+			"response": []
+		},
+		{
+			"name": "Update profile pic and profile data",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "address",
+							"value": "Mumbai",
+							"type": "text"
+						},
+						{
+							"key": "profile_pic",
+							"type": "file",
+							"src": "/media/matchpoint/C2AF-3276/IMG_20200105_235916_808.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/profile/2/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"profile",
+						"2",
+						""
+					]
+				},
+				"description": "This API is used to update user's profile and his profile pic."
+			},
+			"response": []
+		},
+		{
+			"name": "View user profile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8001/profile/9/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"profile",
+						"9",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Convert to foreign currency wallet",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "balance",
+							"value": "1500",
+							"type": "text"
+						},
+						{
+							"key": "currency",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "method",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "user",
+							"value": "8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/transfer/convert_to_foreign_currency/9/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"transfer",
+						"convert_to_foreign_currency",
+						"9",
+						""
+					]
+				},
+				"description": "This API converts Wallet balance(INR) to Foreign Currency. Here sender is Wallet(INR) and after conversion this data is updated in Foreign currency wallet of assigned user."
+			},
+			"response": []
+		},
+		{
+			"name": "Viiew Foreign currency wallet balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8001/transfer/convert_to_foreign_currency/9/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"transfer",
+						"convert_to_foreign_currency",
+						"9",
+						""
+					]
+				},
+				"description": "This API is used to VIEW foreign currency wallet balance of instance(user)."
+			},
+			"response": []
+		},
+		{
+			"name": "Get User wallet data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8001/transfer/one_user_to_other_user_wallet/2/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"transfer",
+						"one_user_to_other_user_wallet",
+						"2",
+						""
+					]
+				},
+				"description": "This API is used for get user wallet data."
+			},
+			"response": []
+		},
+		{
+			"name": "One user to other user transfer money",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "wallet_balance",
+							"value": "2000",
+							"type": "text"
+						},
+						{
+							"key": "user",
+							"value": "9",
+							"type": "text"
+						},
+						{
+							"key": "method",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "currency_type",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/transfer/one_user_to_other_user_wallet/8/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"transfer",
+						"one_user_to_other_user_wallet",
+						"8",
+						""
+					]
+				},
+				"description": "This API is used for transfer money from one user to other user. For that I'm using user_id(8) to user_id(9). "
+			},
+			"response": []
+		},
+		{
+			"name": "User signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "devisahaym",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "qwer1234",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "Devisahay",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Mishra",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "devmishras@hotmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/user/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"user",
+						""
+					]
+				},
+				"description": "This is user signup API."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

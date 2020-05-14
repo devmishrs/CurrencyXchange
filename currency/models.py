@@ -47,7 +47,7 @@ class UserWalletManager(models.Manager):
 class UserWallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     wallet_balance = models.FloatField(default=0.0)
-    method = models.ForeignKey(TransactionMethod, on_delete=models.CASCADE)
+    method = models.ForeignKey(TransactionMethod, on_delete=models.CASCADE, default=1)
     currency_type = models.ForeignKey(Currencies, on_delete=models.CASCADE, default=1)
     update_time = models.DateTimeField(auto_now_add=True)
 

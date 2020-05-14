@@ -12,10 +12,10 @@ class OrderStatementModel(models.Model):
     transaction_id = models.CharField(max_length=155, default=uuid.uuid4().hex.upper())
     timestamp = models.DateTimeField(auto_now_add=True)
     to_self = models.BooleanField(default=False)
-    method = models.ForeignKey(TransactionMethod, on_delete=models.CASCADE)         ## TransactionMethod  
+    method = models.ForeignKey(TransactionMethod, on_delete=models.SET_NULL, null=True)         ## TransactionMethod  
     transaction_amount = models.FloatField(default=0.0)
-    from_wallet = models.ForeignKey(UserWallet, on_delete=models.CASCADE, related_name='from_wallet')   ## from UserWallet
-    to_wallet = models.ForeignKey(UserWallet, on_delete=models.CASCADE, related_name='to_wallet')     ## to UserWallet
+    from_wallet = models.ForeignKey(UserWallet, on_delete=models.SET_NULL, null=True, related_name='from_wallet')   ## from UserWallet
+    to_wallet = models.ForeignKey(UserWallet, on_delete=models.SET_NULL, null=True, related_name='to_wallet')     ## to UserWallet
     is_foreingn = models.BooleanField(default=False)
     to_foreign_wallet = models.ForeignKey(ForeignCurrencyWallet, on_delete=models.SET_NULL,
                                           null=True, related_name='to_foreign_wallet')       ## to ForeignWallet
