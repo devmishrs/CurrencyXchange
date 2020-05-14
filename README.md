@@ -33,3 +33,4 @@
 
 # Database Schema :-
   Databse schema is available in root directory of project **database_schema.png**.
+  ![Database Schema](./database_schema.png)
