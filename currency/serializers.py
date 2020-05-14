@@ -3,6 +3,7 @@ from datetime import datetime
 from rest_framework import serializers
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate
+from CurrencyXchange import constants
 from .models import UserProfile, UserWallet, Currencies, ForeignCurrencyWallet
 from .utils.views import get_currency_converted_balance
 
@@ -96,13 +97,18 @@ class UserWalletSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data, *args, **kwargs):
         print("This is instance ... ",instance)
         print("this is validated_data ",validated_data)
-        instance.wallet_balance += validated_data.get('wallet_balance', instance.wallet_balance) 
-        if 'currency_type' in validated_data:
-            prev_currency = instance.currency_type
-            new_currency = validated_data.get('currency_type', instance.currency_type)
-            instance.currency_type = new_currency
-            current_bal = get_currency_converted_balance(str(prev_currency), str(new_currency), instance.wallet_balance)
-            instance.wallet_balance = current_bal
+        #if 'currency_type' in validated_data:
+        #    prev_currency = instance.currency_type
+        #    new_currency = validated_data.get('currency_type', instance.currency_type)
+        #    instance.currency_type = new_currency
+        #    current_bal = get_currency_converted_balance(str(prev_currency), str(new_currency), instance.wallet_balance)
+        #    instance.wallet_balance = current_bal
+        if 'method' in validated_data:
+            method = str(validated_data.get('method'))
+            if method == constants.PAY_METHOD[0][1]:   # for CREDIT
+                instance.wallet_balance += validated_data.get('wallet_balance', instance.wallet_balance) 
+            elif method == constants.PAY_METHOD[1][1]:
+                instance.wallet_balance -= validated_data.get('wallet_balance', instance.wallet_balance) 
         instance.update_time = datetime.now() 
         instance.save()
         return instance
@@ -114,6 +120,7 @@ class ForeignCurrencyWalletViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ForeignCurrencyWallet
         fields = ('__all__')
+
 
 class ForeignCurrencyWalletSerializer(serializers.ModelSerializer):
     class Meta:
