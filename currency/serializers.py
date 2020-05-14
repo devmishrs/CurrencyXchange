@@ -97,12 +97,6 @@ class UserWalletSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data, *args, **kwargs):
         print("This is instance ... ",instance)
         print("this is validated_data ",validated_data)
-        #if 'currency_type' in validated_data:
-        #    prev_currency = instance.currency_type
-        #    new_currency = validated_data.get('currency_type', instance.currency_type)
-        #    instance.currency_type = new_currency
-        #    current_bal = get_currency_converted_balance(str(prev_currency), str(new_currency), instance.wallet_balance)
-        #    instance.wallet_balance = current_bal
         if 'method' in validated_data:
             method = str(validated_data.get('method'))
             if method == constants.PAY_METHOD[0][1]:   # for CREDIT
@@ -140,16 +134,3 @@ class ForeignCurrencyWalletSerializer(serializers.ModelSerializer):
             wallet.balance += balance
         wallet.save()
         return wallet
-
-    #def create(self, data):
-    #    print("Validated data: ",validated_data)
-    #    amount = validated_data.get('amount')
-    #    user = validated_data.get('user')
-    #    user = User.objects.get(id=user)
-    #    user_wallet, is_created = UserWallet.objects.get_or_create(user=user)
-    #    if is_created:
-    #        user_wallet.wallet_balance = amount
-    #    else:
-    #        user_wallet.wallet_balance += amount
-    #    user_wallet.save()
-    #    return user_wallet
