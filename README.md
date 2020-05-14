@@ -32,5 +32,17 @@
   - Import this file as collection.
 
 # Database Schema :-
-  Databse schema is available in root directory of project **database_schema.png**.
   ![Database Schema](./database_schema.png)
+  Databse schema is also available in root directory of project **database_schema.png**.
+
+# NOTE :
+  In every API example data fields are mentioned as **id** instade of **name**.
+  Like,
+
+   - method ((CREDIT,1), (DEBIT, 2))
+   - currency ((INR,1), (USD, 2))
+  
+  And many others are there, you can find after querying in database.
+
+  Thank You!
+   
