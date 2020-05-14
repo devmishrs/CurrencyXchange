@@ -13,7 +13,7 @@
 	
 1) To setup virtual environment run command:
   `$ pip install virtualenv` (It may require root permission)
-  `$ virtualenv ENV__NAME`
+  `$ virtualenv ENV_NAME`
   `$ source ENV_NAME/bin/activate`
 
   **Your environment is activated.**
